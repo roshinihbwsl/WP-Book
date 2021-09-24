@@ -126,8 +126,8 @@ class Wp_Book_Admin {
 	 */
 	public static function new_ct_book_category() {
 		$labels = array(
-			'name'              => __( 'Book Category', 'wp-book' ),
-			'singular_name'     => __( 'Book Categories', 'wp-book' ),
+			'name'              => __( 'Book Categories', 'wp-book' ),
+			'singular_name'     => __( 'Book Category', 'wp-book' ),
 			'search_items'      => __( 'Search Book Categories', 'wp-book' ),
 			'all_items'         => __( 'All Book Categories', 'wp-book' ),
 			'parent_item'       => __( 'Parent Book Category', 'wp-book' ),
@@ -148,5 +148,6 @@ class Wp_Book_Admin {
 		);
 		register_taxonomy( 'book_category', array( 'book' ), $args );
 	}
+
 }
 
