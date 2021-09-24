@@ -126,17 +126,17 @@ class Wp_Book_Admin {
 	 */
 	public static function new_ct_book_category() {
 		$labels = array(
-			'name'              => __( 'Book Category' ),
-			'singular_name'     => __( 'Book Categories' ),
-			'search_items'      => __( 'Search Book Categories' ),
-			'all_items'         => __( 'All Book Categories' ),
-			'parent_item'       => __( 'Parent Book Category' ),
-			'parent_item_colon' => __( 'Parent Book Category:' ),
-			'edit_item'         => __( 'Edit Book Category' ),
-			'update_item'       => __( 'Update Book Category' ),
-			'add_new_item'      => __( 'Add New Book Category' ),
-			'new_item_name'     => __( 'New Book Category Name' ),
-			'menu_name'         => __( 'Book Category' ),
+			'name'              => __( 'Book Category', 'wp-book' ),
+			'singular_name'     => __( 'Book Categories', 'wp-book' ),
+			'search_items'      => __( 'Search Book Categories', 'wp-book' ),
+			'all_items'         => __( 'All Book Categories', 'wp-book' ),
+			'parent_item'       => __( 'Parent Book Category', 'wp-book' ),
+			'parent_item_colon' => __( 'Parent Book Category:', 'wp-book' ),
+			'edit_item'         => __( 'Edit Book Category', 'wp-book' ),
+			'update_item'       => __( 'Update Book Category', 'wp-book' ),
+			'add_new_item'      => __( 'Add New Book Category', 'wp-book' ),
+			'new_item_name'     => __( 'New Book Category Name', 'wp-book' ),
+			'menu_name'         => __( 'Book Category', 'wp-book' ),
 		);
 		$args   = array(
 			'hierarchical'      => true,
