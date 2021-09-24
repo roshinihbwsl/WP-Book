@@ -101,7 +101,7 @@ class Wp_Book_Admin {
 	}
 
 	/**
-	 * Creates a new custom post type
+	 * Creates a new custom post type called Book
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -115,6 +115,38 @@ class Wp_Book_Admin {
 		$opts['public']      = true;
 
 		register_post_type( 'book', $opts );
+	}
+
+	/**
+	 * Creates a new custom hierarchical category called Book Category
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @uses register_taxonomy()
+	 */
+	public static function new_ct_book_category() {
+		$labels = array(
+			'name'              => __( 'Book Category' ),
+			'singular_name'     => __( 'Book Categories' ),
+			'search_items'      => __( 'Search Book Categories' ),
+			'all_items'         => __( 'All Book Categories' ),
+			'parent_item'       => __( 'Parent Book Category' ),
+			'parent_item_colon' => __( 'Parent Book Category:' ),
+			'edit_item'         => __( 'Edit Book Category' ),
+			'update_item'       => __( 'Update Book Category' ),
+			'add_new_item'      => __( 'Add New Book Category' ),
+			'new_item_name'     => __( 'New Book Category Name' ),
+			'menu_name'         => __( 'Book Category' ),
+		);
+		$args   = array(
+			'hierarchical'      => true,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'book-category' ),
+		);
+		register_taxonomy( 'book_category', array( 'book' ), $args );
 	}
 }
 
