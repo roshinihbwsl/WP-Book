@@ -149,5 +149,37 @@ class Wp_Book_Admin {
 		register_taxonomy( 'book_category', array( 'book' ), $args );
 	}
 
+	/**
+	 * Creates a new custom non-hierarchical category called Book Tag
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @uses register_taxonomy()
+	 */
+	public static function new_ct_book_tag() {
+		$labels = array(
+			'name'              => __( 'Book Tags', 'wp-book' ),
+			'singular_name'     => __( 'Book Tag', 'wp-book' ),
+			'search_items'      => __( 'Search Book Tags', 'wp-book' ),
+			'all_items'         => __( 'All Book Tags', 'wp-book' ),
+			'parent_item'       => __( 'Parent Book Tag', 'wp-book' ),
+			'parent_item_colon' => __( 'Parent Book Tag:', 'wp-book' ),
+			'edit_item'         => __( 'Edit Book Tag', 'wp-book' ),
+			'update_item'       => __( 'Update Book Tag', 'wp-book' ),
+			'add_new_item'      => __( 'Add New Book Tag', 'wp-book' ),
+			'new_item_name'     => __( 'New Book Tag Name', 'wp-book' ),
+			'menu_name'         => __( 'Book Tag', 'wp-book' ),
+		);
+		$args   = array(
+			'hierarchical'      => false,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'book-tag' ),
+		);
+		register_taxonomy( 'book_tag', array( 'book' ), $args );
+	}
+
 }
 
