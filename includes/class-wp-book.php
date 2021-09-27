@@ -159,6 +159,7 @@ class Wp_Book {
 		$this->loader->add_action( 'init', $plugin_admin, 'new_cpt_book' );
 		$this->loader->add_action( 'init', $plugin_admin, 'new_ct_book_category' );
 		$this->loader->add_action( 'init', $plugin_admin, 'new_ct_book_tag' );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'new_cmb_book_info' );
 	}
 
 	/**

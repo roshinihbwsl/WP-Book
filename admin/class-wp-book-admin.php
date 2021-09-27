@@ -115,6 +115,7 @@ class Wp_Book_Admin {
 		$opts['public']      = true;
 
 		register_post_type( 'book', $opts );
+		flush_rewrite_rules();
 	}
 
 	/**
@@ -180,6 +181,44 @@ class Wp_Book_Admin {
 		);
 		register_taxonomy( 'book_tag', array( 'book' ), $args );
 	}
+
+	/**
+	 * Callback for displaying the HTML of the custom meta box
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function cmb_book_info_html ($post, $metabox) {
+		wp_nonce_field( basename( __FILE__ ), 'cmb_book_nonce' );
+		?>
+		<form action='POST'>
+		<label><?php _e('Author Name:', 'wp-book') ?><br><input type='text' name='author'></label><br>
+		<label><?php _e('Price:', 'wp-book') ?><br><input type='text' name='price'></label><br>
+		<label><?php _e('Publisher:', 'wp-book') ?><br><input type='text' name='publisher'></label><br>
+		<label><?php _e('Year:', 'wp-book') ?><br><input type='text' name='year'></label><br>
+		<label><?php _e('Edition:', 'wp-book') ?><br><input type='text' name='edition'></label><br>
+		<label><?php _e('URL:', 'wp-book') ?><br><input type='text' name='url'></label><br>
+		</form>
+		<?php
+	}
+
+	/**
+	 * Creates a new custom meta box called Book Information
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @uses add_meta_box()
+	 */
+	public function new_cmb_book_info() {
+		add_meta_box(
+			'book_info',
+			__('Book Information', 'wp-book' ),
+			array($this, 'cmb_book_info_html'),
+			'book',
+			'side'
+		);
+	}
+
 
 }
 
