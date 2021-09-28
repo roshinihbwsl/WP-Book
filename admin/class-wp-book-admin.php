@@ -101,7 +101,7 @@ class Wp_Book_Admin {
 	}
 
 	/**
-	 * Creates a new custom post type called Book
+	 * Creates a new custom post type called Book.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -119,7 +119,7 @@ class Wp_Book_Admin {
 	}
 
 	/**
-	 * Creates a new custom hierarchical category called Book Category
+	 * Creates a new custom hierarchical category called Book Category.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -151,7 +151,7 @@ class Wp_Book_Admin {
 	}
 
 	/**
-	 * Creates a new custom non-hierarchical category called Book Tag
+	 * Creates a new custom non-hierarchical category called Book Tag.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -183,27 +183,27 @@ class Wp_Book_Admin {
 	}
 
 	/**
-	 * Callback for displaying the HTML of the custom meta box
+	 * Callback for displaying the HTML of the custom meta box.
 	 *
 	 * @since 1.0.0
 	 * @access public
 	 */
 	public function cmb_book_info_html ($post, $metabox) {
-		wp_nonce_field( basename( __FILE__ ), 'cmb_book_nonce' );
 		?>
-		<form action='POST'>
-		<label><?php _e('Author Name:', 'wp-book') ?><br><input type='text' name='author'></label><br>
-		<label><?php _e('Price:', 'wp-book') ?><br><input type='text' name='price'></label><br>
-		<label><?php _e('Publisher:', 'wp-book') ?><br><input type='text' name='publisher'></label><br>
-		<label><?php _e('Year:', 'wp-book') ?><br><input type='text' name='year'></label><br>
-		<label><?php _e('Edition:', 'wp-book') ?><br><input type='text' name='edition'></label><br>
-		<label><?php _e('URL:', 'wp-book') ?><br><input type='text' name='url'></label><br>
+		<form action='class-wp-book-admin.php' method='post'>
+		<label><?php _e('Author Name:', 'wp-book') ?><br><input type='text' name='author' value='<?php echo get_metadata('book', $post->ID, 'Author', true); ?>'></label><br>
+		<label><?php _e('Price:', 'wp-book') ?><br><input type='text' name='price' value='<?php echo get_metadata('book', $post->ID, 'Price', true); ?>'></label><br>
+		<label><?php _e('Publisher:', 'wp-book') ?><br><input type='text' name='publisher' value='<?php echo get_metadata('book', $post->ID, 'Publisher', true); ?>'></label><br>
+		<label><?php _e('Year:', 'wp-book') ?><br><input type='text' name='year' value='<?php echo get_metadata('book', $post->ID, 'Year', true); ?>'></label><br>
+		<label><?php _e('Edition:', 'wp-book') ?><br><input type='text' name='edition' value='<?php echo get_metadata('book', $post->ID, 'Edition', true); ?>'></label><br>
+		<label><?php _e('URL:', 'wp-book') ?><br><input type='text' name='url' value='<?php echo get_metadata('book', $post->ID, 'URL', true); ?>'></label><br>
+		<?php wp_nonce_field( basename( __FILE__ ), 'cmb_book_nonce' ); ?>
 		</form>
 		<?php
 	}
 
 	/**
-	 * Creates a new custom meta box called Book Information
+	 * Creates a new custom meta box called Book Information.
 	 *
 	 * @since 1.0.0
 	 * @access public
@@ -219,6 +219,128 @@ class Wp_Book_Admin {
 		);
 	}
 
+	/**
+	 * Registers the meta table for custom meta box.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function cmb_register_metatable() {
+		global $wpdb;
+		$wpdb->bookmeta = $wpdb->prefix . 'book_meta';
+	}
+
+	/**
+	 * Saves custom meta box Information in database.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @uses add_metadata(), update_metadata()
+	 */
+	public function save_cmb($post_id) {
+		if ( isset( $_POST['cmb_book_nonce'] ) && wp_verify_nonce( $_POST['cmb_book_nonce'], basename( __FILE__ ) ) ) {
+			if ( '' == get_metadata('book', $post_id, 'Author', true) ) {
+				add_metadata( 'book', $post_id, 'Author', $_POST['author'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'Author', $_POST['author'] );
+			}
+
+			if ( '' == get_metadata('book', $post_id, 'Price', true) ) {
+				add_metadata( 'book', $post_id, 'Price', $_POST['price'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'Price', $_POST['price'] );
+			}
+
+			if ( '' == get_metadata('book', $post_id, 'Publisher', true) ) {
+				add_metadata( 'book', $post_id, 'Publisher', $_POST['publisher'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'Publisher', $_POST['publisher'] );
+			}
+
+			if ( '' == get_metadata('book', $post_id, 'Year', true) ) {
+				add_metadata( 'book', $post_id, 'Year', $_POST['year'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'Year', $_POST['year'] );
+			}
+
+			if ( '' == get_metadata('book', $post_id, 'Edition', true) ) {
+				add_metadata( 'book', $post_id, 'Edition', $_POST['edition'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'Edition', $_POST['edition'] );
+			}
+
+			if ( '' == get_metadata('book', $post_id, 'URL', true) ) {
+				add_metadata( 'book', $post_id, 'URL', $_POST['url'] );
+			}
+			else {
+				update_metadata( 'book', $post_id, 'URL', $_POST['url'] );
+			}
+		}
+		
+	}
+
+	/**
+	* Registers custom admin settings page.
+	*
+	* @since 1.0.0
+	*/
+
+	public function add_plugin_admin_menu() {
+		add_submenu_page( 'edit.php?post_type=book', 'Book Options', 'Settings', 'manage_options', 'book-options', array($this, 'display_plugin_setup_page'));
+	}
+
+	/**
+	* Callback for displaying the HTML of the admin settings page.
+	*
+	* @since 1.0.0
+	*/
+	public function display_plugin_setup_page() {
+		?>
+		<div class='wrap'>
+			<h1>Book Settings</h1><br>
+			<form action="options.php" method='post'>
+			<?php settings_fields('book_settings_group'); ?>
+				<label>
+					Currency:<br>
+					<select name='book_settings[currency]'>
+  						<option value='Rupee' <?php if ( get_option('book_settings')['currency'] == 'Rupee' ) { echo 'selected';} ?>>Rupee</option>
+  						<option value='Dollar' <?php if ( get_option('book_settings')['currency'] == 'Dollar' ) { echo 'selected';} ?>>Dollar</option>
+  						<option value='Pound' <?php if ( get_option('book_settings')['currency'] == 'Pound' ) { echo 'selected';} ?>>Pound</option>
+  						<option value='Yen' <?php if ( get_option('book_settings')['currency'] == 'Yen' ) { echo 'selected';} ?>>Yen</option>
+					</select>	
+				</label><br>
+				<label>Number of books per page (On archive pages):<br><input type="text" name='book_settings[no_of_books]' value='<?php if ( is_array(get_option('book_settings'))) {echo get_option('book_settings')['no_of_books'];} ?>'></label>
+				<?php submit_button('Save all changes', 'primary','submit', TRUE); ?>
+			</form>
+		</div>
+		<?php
+	}
+
+	/**
+	* Registers settings in the options table.
+	*
+	* @since 1.0.0
+	* @uses register_setting()
+	*/
+	public function book_register_settings() {
+		register_setting('book_settings_group', 'book_settings');
+	}
+
+	/**
+	* Sets posts per page on Book archive page.
+	*
+	* @since 1.0.0
+	*/
+	public function book_archive_page( $query ) {
+		if ( !is_admin() && $query->is_main_query() && is_post_type_archive( 'book' ) ) {
+				$query->set( 'posts_per_page', get_option('book_settings')['no_of_books'] );
+		}
+	}
 
 }
 

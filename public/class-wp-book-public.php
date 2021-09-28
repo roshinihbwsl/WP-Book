@@ -100,4 +100,48 @@ class Wp_Book_Public {
 
 	}
 
+	/**
+	 * Registers shortcode.
+	 *
+	 * @since 1.0.0
+	 * @uses add_shortcode()
+	 */
+	public function register_shortcode() {
+		add_shortcode( 'book', array( $this, 'handle_shortcode' ) );
+	}
+
+	/**
+	 * Handles shortcode.
+	 *
+	 * @param array  $atts is an array of arrtributes of the shortcode.
+	 * @param string $content is content to be displayed.
+	 * @since 1.0.0
+	 */
+	public function handle_shortcode( $atts = array(), $content = null ) {
+		$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+		$atts = shortcode_atts(
+			array(
+				'id'          => '1',
+				'author_name' => 'Jon Doe',
+				'category'    => 'Thriller',
+				'tag'         => 'english',
+				'year'        => '2012',
+				'publisher'   => 'Bloomberry',
+			),
+			$atts,
+			'book'
+		);
+
+		$content  = '<h1> Book Info </H1>';
+		$content .= '<p>ID: ' . $atts['id'] . ' </p><br>';
+		$content .= '<p>Author: ' . $atts['author_name'] . ' </p><br>';
+		$content .= '<p>Category: ' . $atts['category'] . ' </p><br>';
+		$content .= '<p>Tag: ' . $atts['tag'] . ' </p><br>';
+		$content .= '<p>Year: ' . $atts['year'] . ' </p><br>';
+		$content .= '<p>Publisher: ' . $atts['publisher'] . ' </p><br>';
+
+		return $content;
+	}
+
 }
+

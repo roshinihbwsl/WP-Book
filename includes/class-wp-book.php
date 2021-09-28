@@ -160,6 +160,11 @@ class Wp_Book {
 		$this->loader->add_action( 'init', $plugin_admin, 'new_ct_book_category' );
 		$this->loader->add_action( 'init', $plugin_admin, 'new_ct_book_tag' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'new_cmb_book_info' );
+		$this->loader->add_action( 'plugins_loaded', $plugin_admin, 'cmb_register_metatable' );
+		$this->loader->add_action( 'save_post_book', $plugin_admin, 'save_cmb' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_admin_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'book_register_settings' );
+		$this->loader->add_action( 'pre_get_posts', $plugin_admin, 'book_archive_page' );
 	}
 
 	/**
@@ -175,6 +180,7 @@ class Wp_Book {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'init', $plugin_public, 'register_shortcode' );
 
 	}
 
