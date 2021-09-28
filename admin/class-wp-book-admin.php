@@ -342,5 +342,38 @@ class Wp_Book_Admin {
 		}
 	}
 
+	/**
+	* Adds dashboard widget to display top 5 categories.
+	*
+	* @since 1.0.0
+	* @uses wp_add_dashboard_widget()
+	*/
+	public function book_register_dash_widget() {
+        wp_add_dashboard_widget( 'book_dash_cat_widget', __( 'Top 5 Book Categories', 'wp-book' ), array( $this, 'book_render_dash_widget' ) );
+    }
+
+	/**
+	* Renders HTML for dashboard category widget.
+	*
+	* @since 1.0.0
+	*/
+	function book_render_dash_widget() {
+		$categories = get_terms( array(
+			'taxonomy'   => 'book_category',
+			'hide_empty' => false,
+			'number'     => '5',
+			'orderby'    => 'count',
+			'order'      => 'DESC',
+		) );
+		foreach ( $categories as $category ) { ?>
+            <li><a 
+                href="<?php echo get_category_link( $category->term_id );?>">
+                <?php echo $category->name; ?>
+                </a>
+                <span class="count"><?php echo $category->count; ?></span>
+            </li>
+        	<?php 
+		}
+	}
 }
 
