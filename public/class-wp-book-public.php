@@ -143,5 +143,40 @@ class Wp_Book_Public {
 		return $content;
 	}
 
+	/**
+	 * Registers custom gutenberg blocks.
+	 *
+	 * @since 1.0.0
+	 */
+	public function book_gutenberg_block() {
+
+		wp_register_script(
+			'custom-block-js',
+			plugin_dir_url( __DIR__ ) . 'build/index.js',
+			array( 'wp-blocks', 'wp-element', 'wp-editor' )
+		);
+
+		wp_register_style(
+			'custom-block-editor-style',
+			plugin_dir_url( __DIR__ ) . 'src/editor.css',
+			array( 'wp-edit-blocks' )
+		);
+
+		wp_register_style(
+			'custom-block-frontend-style',
+			plugin_dir_url( __DIR__ ) . 'src/style.css',
+			array( 'wp-edit-blocks' )
+		);
+
+		register_block_type(
+			'wp-book/gutenberg-book-category',
+			array(
+				'editor_script' => 'custom-block-js',
+				'editor_style'  => 'custom-block-editor-style',
+				'style'         => 'custom-block-frontend-style',
+			)
+		);
+	}
+
 }
 

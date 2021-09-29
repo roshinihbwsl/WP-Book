@@ -358,6 +358,7 @@ class Wp_Book_Admin {
 	* @since 1.0.0
 	*/
 	function book_render_dash_widget() {
+
 		$categories = get_terms( array(
 			'taxonomy'   => 'book_category',
 			'hide_empty' => false,
