@@ -44,13 +44,13 @@ class Wp_Book_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -97,6 +97,7 @@ class Wp_Book_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-book-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . 'index.js', plugin_dir_url( __DIR__ ) . 'build/index.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -141,41 +142,6 @@ class Wp_Book_Public {
 		$content .= '<p>Publisher: ' . $atts['publisher'] . ' </p><br>';
 
 		return $content;
-	}
-
-	/**
-	 * Registers custom gutenberg blocks.
-	 *
-	 * @since 1.0.0
-	 */
-	public function book_gutenberg_block() {
-
-		wp_register_script(
-			'custom-block-js',
-			plugin_dir_url( __DIR__ ) . 'build/index.js',
-			array( 'wp-blocks', 'wp-element', 'wp-editor' )
-		);
-
-		wp_register_style(
-			'custom-block-editor-style',
-			plugin_dir_url( __DIR__ ) . 'src/editor.css',
-			array( 'wp-edit-blocks' )
-		);
-
-		wp_register_style(
-			'custom-block-frontend-style',
-			plugin_dir_url( __DIR__ ) . 'src/style.css',
-			array( 'wp-edit-blocks' )
-		);
-
-		register_block_type(
-			'wp-book/gutenberg-book-category',
-			array(
-				'editor_script' => 'custom-block-js',
-				'editor_style'  => 'custom-block-editor-style',
-				'style'         => 'custom-block-frontend-style',
-			)
-		);
 	}
 
 }

@@ -97,7 +97,7 @@ class Wp_Book_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-book-admin.js', array( 'jquery' ), $this->version, false );
-
+		
 	}
 
 	/**
@@ -376,5 +376,85 @@ class Wp_Book_Admin {
         	<?php 
 		}
 	}
+
+	/**
+	* Send category list data form php to js by localizing script.
+	*
+	* @since 1.0.0
+	* @uses wp_localize_script()
+	*/
+	function send_category_list_to_js() {
+
+		$cats_name = array();
+		$categories = get_categories( array(
+			 'taxonomy' => 'book_category',
+			 'hide_empty' => false
+			  )
+			 );
+
+		foreach ( $categories as $category ) {
+			array_push( $cats_name, $category->name );
+		}
+
+		wp_enqueue_script('block-cat-list', plugin_dir_url( __DIR__ ) . 'build/index.js');
+		wp_localize_script('block-cat-list', 'wp_book_vars', array(
+			'category' => $cats_name
+		)
+	);
+		
+	}
+
+	/**
+	 * Registers custom gutenberg blocks.
+	 *
+	 * @since 1.0.0
+	 */
+	public function book_gutenberg_block() {
+		
+		wp_register_script(
+			'custom-block-js',
+			plugin_dir_url( __DIR__ ) . 'build/index.js',
+			array( 'wp-blocks', 'wp-element', 'wp-editor' )
+		);
+
+		wp_register_style(
+			'custom-block-editor-style',
+			plugin_dir_url( __DIR__ ) . 'src/editor.css',
+			array( 'wp-edit-blocks' )
+		);
+
+		wp_register_style(
+			'custom-block-frontend-style',
+			plugin_dir_url( __DIR__ ) . 'src/style.css',
+			array( 'wp-edit-blocks' )
+		);
+
+		register_block_type(
+			'wp-book/gutenberg-book-category',
+			array(
+				'editor_script'   => 'custom-block-js',
+				'editor_style'    => 'custom-block-editor-style',
+				'style'           => 'custom-block-frontend-style',
+				'attributes'      => array(
+					'selected' => array(
+						'type' => 'string',
+					),
+				),
+				'render_callback' => array( $this, 'block_render'),
+			)
+		);
+	}
+
+	public function block_render( $atts ) {
+		$cat =  $atts['selected'];
+
+		$args = array( 'book_category' => $cat, 'post_type' => 'book' );
+	
+		$catPost = get_posts($args);
+		foreach ($catPost as $post) {
+			echo '<h1>' . $post->post_title . '</h1>';
+			echo '<p>' . $post->post_content . '</p>';
+		}
+	}	
 }
 

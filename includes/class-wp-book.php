@@ -166,6 +166,8 @@ class Wp_Book {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'book_register_settings' );
 		$this->loader->add_action( 'pre_get_posts', $plugin_admin, 'book_archive_page' );
 		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'book_register_dash_widget' );
+		$this->loader->add_action( 'init', $plugin_admin, 'book_gutenberg_block' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'send_category_list_to_js' );
 	}
 
 	/**
@@ -182,7 +184,6 @@ class Wp_Book {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcode' );
-		$this->loader->add_action( 'init', $plugin_public, 'book_gutenberg_block' );
 	}
 
 	/**
