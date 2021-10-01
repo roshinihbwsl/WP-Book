@@ -109,18 +109,17 @@ registerBlockType('wp-book/gutenberg-book-category', {
   // builtin functions
   edit: props => {
     function handleChange(e) {
-      console.log(e.target.value + "value");
       props.setAttributes({
         selected: e.target.value
       });
-      console.log(props.attributes.selected + "props");
     }
 
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "wp-book-cat-block"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Select a category form below to display books:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
       name: "categories",
-      onChange: handleChange
+      onChange: handleChange,
+      value: props.attributes.selected
     }, wp_book_vars.category.map(category => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
       value: category
     }, category))));

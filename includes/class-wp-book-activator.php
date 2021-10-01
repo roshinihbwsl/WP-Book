@@ -45,7 +45,7 @@ class Wp_Book_Activator {
 			dbDelta( $sql );
 		}
 
-		add_option( 'book_settings', array( 'currency' => 'Rupee', 'no_of_books' => 10) );
+		add_option( 'book_settings', array( 'currency' => 'Rupees', 'no_of_books' => 10) );
 	}
 
 }

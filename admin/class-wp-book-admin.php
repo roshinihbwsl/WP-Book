@@ -191,12 +191,12 @@ class Wp_Book_Admin {
 	public function cmb_book_info_html ($post, $metabox) {
 		?>
 		<form action='class-wp-book-admin.php' method='post'>
-		<label><?php _e('Author Name:', 'wp-book') ?><br><input type='text' name='author' value='<?php echo get_metadata('book', $post->ID, 'Author', true); ?>'></label><br>
-		<label><?php _e('Price:', 'wp-book') ?><br><input type='text' name='price' value='<?php echo get_metadata('book', $post->ID, 'Price', true); ?>'></label><br>
-		<label><?php _e('Publisher:', 'wp-book') ?><br><input type='text' name='publisher' value='<?php echo get_metadata('book', $post->ID, 'Publisher', true); ?>'></label><br>
-		<label><?php _e('Year:', 'wp-book') ?><br><input type='text' name='year' value='<?php echo get_metadata('book', $post->ID, 'Year', true); ?>'></label><br>
-		<label><?php _e('Edition:', 'wp-book') ?><br><input type='text' name='edition' value='<?php echo get_metadata('book', $post->ID, 'Edition', true); ?>'></label><br>
-		<label><?php _e('URL:', 'wp-book') ?><br><input type='text' name='url' value='<?php echo get_metadata('book', $post->ID, 'URL', true); ?>'></label><br>
+		<label><?php _e('Author Name:', 'wp-book') ?><br><input required type='text' name='book_author_name' value='<?php echo get_metadata('book', $post->ID, 'Author', true); ?>'></label><br>
+		<label><?php _e('Price:', 'wp-book') ?><br><input required type='text' name='price' value='<?php echo get_metadata('book', $post->ID, 'Price', true); ?>'></label><br>
+		<label><?php _e('Publisher:', 'wp-book') ?><br><input required type='text' name='publisher' value='<?php echo get_metadata('book', $post->ID, 'Publisher', true); ?>'></label><br>
+		<label><?php _e('Year:', 'wp-book') ?><br><input required type='text' name='year' value='<?php echo get_metadata('book', $post->ID, 'Year', true); ?>'></label><br>
+		<label><?php _e('Edition:', 'wp-book') ?><br><input required type='text' name='edition' value='<?php echo get_metadata('book', $post->ID, 'Edition', true); ?>'></label><br>
+		<label><?php _e('URL:', 'wp-book') ?><br><input required type='text' name='url' value='<?php echo get_metadata('book', $post->ID, 'URL', true); ?>'></label><br>
 		<?php wp_nonce_field( basename( __FILE__ ), 'cmb_book_nonce' ); ?>
 		</form>
 		<?php
@@ -240,10 +240,12 @@ class Wp_Book_Admin {
 	public function save_cmb($post_id) {
 		if ( isset( $_POST['cmb_book_nonce'] ) && wp_verify_nonce( $_POST['cmb_book_nonce'], basename( __FILE__ ) ) ) {
 			if ( '' == get_metadata('book', $post_id, 'Author', true) ) {
-				add_metadata( 'book', $post_id, 'Author', $_POST['author'] );
+				add_metadata( 'book', $post_id, 'Author', $_POST['book_author_name'] );
+				add_post_meta( $post_id, 'book_author_name', $_POST['book_author_name'] );
 			}
 			else {
-				update_metadata( 'book', $post_id, 'Author', $_POST['author'] );
+				update_metadata( 'book', $post_id, 'Author', $_POST['book_author_name'] );
+				update_post_meta( $post_id, 'book_author_name', $_POST['book_author_name'] );
 			}
 
 			if ( '' == get_metadata('book', $post_id, 'Price', true) ) {
@@ -255,16 +257,20 @@ class Wp_Book_Admin {
 
 			if ( '' == get_metadata('book', $post_id, 'Publisher', true) ) {
 				add_metadata( 'book', $post_id, 'Publisher', $_POST['publisher'] );
+				add_post_meta( $post_id, 'publisher', $_POST['publisher'] );
 			}
 			else {
 				update_metadata( 'book', $post_id, 'Publisher', $_POST['publisher'] );
+				update_post_meta( $post_id, 'publisher', $_POST['publisher'] );
 			}
 
 			if ( '' == get_metadata('book', $post_id, 'Year', true) ) {
 				add_metadata( 'book', $post_id, 'Year', $_POST['year'] );
+				add_post_meta( $post_id, 'year', $_POST['year'] );
 			}
 			else {
 				update_metadata( 'book', $post_id, 'Year', $_POST['year'] );
+				update_post_meta( $post_id, 'year', $_POST['year'] );
 			}
 
 			if ( '' == get_metadata('book', $post_id, 'Edition', true) ) {
@@ -308,10 +314,10 @@ class Wp_Book_Admin {
 				<label>
 					Currency:<br>
 					<select name='book_settings[currency]'>
-  						<option value='Rupee' <?php if ( get_option('book_settings')['currency'] == 'Rupee' ) { echo 'selected';} ?>>Rupee</option>
-  						<option value='Dollar' <?php if ( get_option('book_settings')['currency'] == 'Dollar' ) { echo 'selected';} ?>>Dollar</option>
-  						<option value='Pound' <?php if ( get_option('book_settings')['currency'] == 'Pound' ) { echo 'selected';} ?>>Pound</option>
-  						<option value='Yen' <?php if ( get_option('book_settings')['currency'] == 'Yen' ) { echo 'selected';} ?>>Yen</option>
+  						<option value='Rupees' <?php if ( get_option('book_settings')['currency'] == 'Rupees' ) { echo 'selected';} ?>>Rupees</option>
+  						<option value='Dollars' <?php if ( get_option('book_settings')['currency'] == 'Dollars' ) { echo 'selected';} ?>>Dollars</option>
+  						<option value='Pounds' <?php if ( get_option('book_settings')['currency'] == 'Pounds' ) { echo 'selected';} ?>>Pounds</option>
+  						<option value='Yens' <?php if ( get_option('book_settings')['currency'] == 'Yens' ) { echo 'selected';} ?>>Yens</option>
 					</select>	
 				</label><br>
 				<label>Number of books per page (On archive pages):<br><input type="text" name='book_settings[no_of_books]' value='<?php if ( is_array(get_option('book_settings'))) {echo get_option('book_settings')['no_of_books'];} ?>'></label>
@@ -386,11 +392,13 @@ class Wp_Book_Admin {
 	function send_category_list_to_js() {
 
 		$cats_name = array();
-		$categories = get_categories( array(
-			 'taxonomy' => 'book_category',
-			 'hide_empty' => false
-			  )
-			 );
+
+		$categories = get_categories(
+				array(
+					'taxonomy' => 'book_category',
+					'hide_empty' => false
+			  	)
+			);
 
 		foreach ( $categories as $category ) {
 			array_push( $cats_name, $category->name );
@@ -398,7 +406,7 @@ class Wp_Book_Admin {
 
 		wp_enqueue_script('block-cat-list', plugin_dir_url( __DIR__ ) . 'build/index.js');
 		wp_localize_script('block-cat-list', 'wp_book_vars', array(
-			'category' => $cats_name
+			'category' => $cats_name,
 		)
 	);
 		

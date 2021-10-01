@@ -23,19 +23,17 @@ registerBlockType('wp-book/gutenberg-book-category', {
 	edit: (props) => {
 
         function handleChange(e) {
-            console.log(e.target.value + "value");
             props.setAttributes(
                 {
                     selected: e.target.value,
                 }
             );
-            console.log(props.attributes.selected + "props");
         }
 
 		return (
             <div className='wp-book-cat-block'>
                 <p>Select a category form below to display books:</p>
-                <select name='categories' onChange={handleChange}>
+                <select name='categories' onChange={handleChange} value={props.attributes.selected}>
                     {
                         wp_book_vars.category.map(
                             (category) => ( <option value={category}>{category}</option> )
